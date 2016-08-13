@@ -2,6 +2,8 @@
 Webapp for the anomaly detection project.
 # Instructions
   Create the parsedOutput and uploadedLogs folder<br>
+  Before running:<br>
+  `pip install -r requirements.txt`<br>
   To run the server:<br>
     `cd logParserWeb` <br>
     `python server.py`<br>
