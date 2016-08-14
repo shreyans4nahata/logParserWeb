@@ -3,7 +3,7 @@ from flask import Flask, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 import json
 import modules.parse_current as parser
-UPLOAD_FOLDER = '/home/shreyansh/Documents/code/logParserWeb/uploadedLogs'
+UPLOAD_FOLDER = './uploadedLogs'
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'csv', 'log'])
 
