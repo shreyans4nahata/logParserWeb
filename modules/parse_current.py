@@ -12,7 +12,7 @@ def parser(inputFileName):
 
 	# Creating output file
 	outputDir = os.getcwd() + "/parsedOutput/"
-	outputFileName = outputDir + "Parsed_" + os.path.splitext(ntpath.basename(inputFileName))[0] + ".csv"
+	outputFileName = outputDir + os.path.splitext(ntpath.basename(inputFileName))[0] + ".csv"
 
 	# Opening output file
 	outputFile = open(outputFileName,"w+")
