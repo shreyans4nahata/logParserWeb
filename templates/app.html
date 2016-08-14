@@ -78,17 +78,15 @@ data.append('file', document.getElementById('file').files[0]);
 
 axios.post('/upload', data)
       .then(function (res) {
+        var filename = document.getElementById('file').files[0].name
+        window.localStorage.setItem('current', filename);
         document.getElementById('loader').style.visibility = "hidden";
         toastr.success('File uploaded')
-      console.log("response",res);
       })
       .catch(function (err) {
         toastr.error("Error occured");
-       console.log("Err",err);
       })
 }
-
-
 
 var graph = new Rickshaw.Graph( {
     element: document.querySelector("#chart"),
@@ -96,12 +94,7 @@ var graph = new Rickshaw.Graph( {
     height: 200,
     series: [{
         color: 'steelblue',
-        data: [
-            { x: 0, y: 40 },
-            { x: 1, y: 49 },
-            { x: 2, y: 38 },
-            { x: 3, y: 30 },
-            { x: 4, y: 32 } ]
+        data: [{ x: 0, y: 120 }, { x: 2, y: 38 }, { x: 3, y: 70 }, { x: 4, y: 32 }]
     }]
 });
 
