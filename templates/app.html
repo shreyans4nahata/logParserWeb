@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<!-- Latest compiled and minified JavaScript -->
+  <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <meta charset="utf-8">
+    <title>Anomaly Detector</title>
+  </head>
+  <body>
+    <div class="container">
+  <form>
+        <div class="row">
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div class="row">
+          <div class="col-md-8"></div>
+          <div class="form-group">
+          <div class="col-md-2 col-md--offset-2">
+
+            <span>
+    <input  type="file"
+            id="file"
+            style="visibility:hidden; width: 1px;"
+            id='${multipartFilePath}' name='${multipartFilePath}'
+            onchange="$(this).parent().find('span').html($(this).val().replace('C:\\fakepath\\', ''))"  /> <!-- Chrome security returns 'C:\fakepath\'  -->
+    <input class="btn btn-primary" type="button" value="Upload File.." onclick="$(this).parent().find('input[type=file]').click();"/> <!-- on button click fire the file click event -->
+    &nbsp;
+    <span  class="badge badge-important" ></span>
+</span>
+          </div>
+        </div>
+        </div>
+  </form>
+    <!-- <div id="output" class="container"></div> -->
+        <br>
+        <br>
+        <br>
+
+        <div class="row">
+          <div class="col-md-8"></div>
+          <div class="col-md-2 col-md--offset-2">
+            <button type="submit" class="btn btn-default">Submit</button>
+          </div>
+        </div>
+
+    </div>
+  </body>
+</html>
+
+<script>
+toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
+var output = document.getElementById('output');
+document.getElementById("file").onchange = function() {
+var data = new FormData()
+data.append('file', document.getElementById('file').files[0]);
+//TODO: Add progress bar
+// var config = {
+//       progress: function(progressEvent) {
+//     var percentCompleted = progressEvent.loaded / progressEvent.total;
+//       }
+// };
+axios.post('/upload', data)
+      .then(function (res) {
+      toastr.success('File uploaded')
+      console.log("response",res);
+      })
+      .catch(function (err) {
+        toastr.error("Error occured");
+       console.log("Err",err);
+      })
+}
+</script>

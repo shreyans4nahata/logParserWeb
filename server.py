@@ -41,7 +41,7 @@ def upload_file():
             parser.parser(UPLOAD_FOLDER + '/' + filename)
             return json.dumps({"message":"success!!"})
 
-    return render_template('sample_upload.html')
+    return render_template('app.html')
 
 if __name__ == "__main__":
 	app.run(debug = True)
