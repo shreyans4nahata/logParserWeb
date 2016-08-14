@@ -1,146 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style media="screen">
-@import url(http://fonts.googleapis.com/css?family=RobotoDraft:500);
-*
-{
-font-family: 'RobotoDraft', sans-serif;
-font-size: 15px;
-padding: 20px;
-}
-
-.loader {
-  top : 100px
-}
-.material_block
-{
-width: 580px;
-padding: 20px;
-background-color: #fff;
-box-shadow: 0 2px 5px rgba(0,0,0,.4);
-margin: auto;
-}
-
-.spinner
-{
--webkit-animation: rotation 1.4s linear infinite;
-animation: rotation 1.4s linear infinite;
-}
-
-@-webkit-keyframes rotation
-{
-0% {
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
-}
-
-100% {
-  -webkit-transform: rotate(270deg);
-  transform: rotate(270deg);
-}
-}
-
-@keyframes rotation
-{
-0% {
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
-}
-
-100% {
-  -webkit-transform: rotate(270deg);
-  transform: rotate(270deg);
-}
-}
-
-.circle
-{
-stroke-dasharray: 187;
-stroke-dashoffset: 0;
--webkit-transform-origin: center;
--ms-transform-origin: center;
-transform-origin: center;
--webkit-animation: turn 1.4s ease-in-out infinite;
-animation: turn 1.4s ease-in-out infinite;
-}
-
-@-webkit-keyframes turn
-{
-0% {
-  stroke-dashoffset: 187;
-}
-
-50% {
-  stroke-dashoffset: 46.75;
-  -webkit-transform: rotate(135deg);
-  transform: rotate(135deg);
-}
-
-100% {
-  stroke-dashoffset: 187;
-  -webkit-transform: rotate(450deg);
-  transform: rotate(450deg);
-}
-}
-
-@keyframes turn
-{
-0% {
-  stroke-dashoffset: 187;
-}
-
-50% {
-  stroke-dashoffset: 46.75;
-  -webkit-transform: rotate(135deg);
-  transform: rotate(135deg);
-}
-
-100% {
-  stroke-dashoffset: 187;
-  -webkit-transform: rotate(450deg);
-  transform: rotate(450deg);
-}
-}
-
-svg:nth-child(1){stroke:#e51c23;}
-svg:nth-child(2){stroke:#e91e63;}
-svg:nth-child(3){stroke:#9c27b0;}
-svg:nth-child(4){stroke:#673ab7;}
-svg:nth-child(5){stroke:#3f51b5;}
-svg:nth-child(6){stroke:#5677fc;}
-svg:nth-child(7){stroke:#03a9f4;}
-svg:nth-child(8){stroke:#00bcd4;}
-svg:nth-child(9){stroke:#009688;}
-svg:nth-child(10){stroke:#259b24;}
-svg:nth-child(11){stroke:#8bc34a;}
-svg:nth-child(12){stroke:#cddc39;}
-svg:nth-child(13){stroke:#ffeb3b;}
-svg:nth-child(14){stroke:#ffc107;}
-svg:nth-child(15){stroke:#ff9800;}
-svg:nth-child(16){stroke:#ff5722;}
-svg:nth-child(17){stroke:#795548;}
-svg:nth-child(18){stroke:#9e9e9e;}
-svg:nth-child(19){stroke:#607d8b;}
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/style.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.css">
 <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <!-- Latest compiled and minified JavaScript -->
   <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+  <!-- <script src="..static/vendor/d3.min.js"></script>
+  <script src="..static/vendor/d3.layout.min.js"></script> -->
+<!-- <script src="../rickshaw.min.js"></script> -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+  <script src="{{ url_for('static', filename='vendor/d3.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/d3.layout.min.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <meta charset="utf-8">
     <title>Anomaly Detector</title>
   </head>
   <body>
-    <div class="container">
+    <div class="container well well-lg">
   <form>
         <div class="row">
+          <div id="chart"></div>
         </div>
 
         <br>
@@ -201,4 +87,23 @@ axios.post('/upload', data)
        console.log("Err",err);
       })
 }
+
+
+
+var graph = new Rickshaw.Graph( {
+    element: document.querySelector("#chart"),
+    width: 300,
+    height: 200,
+    series: [{
+        color: 'steelblue',
+        data: [
+            { x: 0, y: 40 },
+            { x: 1, y: 49 },
+            { x: 2, y: 38 },
+            { x: 3, y: 30 },
+            { x: 4, y: 32 } ]
+    }]
+});
+
+graph.render();
 </script>
