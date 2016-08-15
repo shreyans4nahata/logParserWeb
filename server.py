@@ -57,11 +57,13 @@ def getIpList(filename):
 @app.route('/iqr',methods = ['POST'])
 def IQR():
     filename = request.form['filename']
+    ip = request.form['ip'] 
     alpha = float(request.form['alpha'])
-    if filename == "" or alpha == "" :
+
+    if filename == "" or alpha == "" or ip == "":
         flash('Irregular')
         return redirect(request.url)
-    return gen.completeListIQR(filename,alpha)
+    return gen.completeListIQR(filename,alpha,ip)
 
 if __name__ == "__main__":
 	app.run(debug = True)
