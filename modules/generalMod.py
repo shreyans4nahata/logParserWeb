@@ -14,6 +14,10 @@ def getUiP(inputCSVFile):
     fileObject = open(outputDir+inputCSVFile,"r")
     reader = csv.DictReader(fileObject)
 
+    timestamp = [] # list to store all timestamps includes duplicates
+    ip = [] # list to store all remote ip's
+    unique_ip = []
+    
     # storing timestamp and ip's in a list
     for row in reader:
         timestamp.append(row['f1'])
