@@ -98,16 +98,18 @@ def completeListIQR(inputCSVFile,alpha,req_ip):
     print q75,q25
     outlier = []
     outlier_x = []
-    
+    index = 0 
     for h in range(len_tr):
         new_dict = {}
         if tr[h] < ll or tr[h] > ul:
-            new_dict["x"] =  t_list[h]
+            new_dict["x"] =  index
             new_dict["y"] =  tr[h]
             outliers_final.append(new_dict)
+            index+=1
         else:
-            new_dict["x"] =  t_list[h]
+            new_dict["x"] =  index
             new_dict["y"] =  tr[h]
             inliers_final.append(new_dict)
+            index+=1
 
     return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
