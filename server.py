@@ -54,5 +54,14 @@ def getIpList(filename):
     if filename :
         return gen.getUiP(filename)
 
+@app.route('/iqr',methods = ['POST'])
+def IQR():
+    filename = request.form['filename']
+    alpha = float(request.form['alpha'])
+    if filename == "" or alpha == "" :
+        flash('Irregular')
+        return redirect(request.url)
+    return gen.completeListIQR(filename,alpha)
+
 if __name__ == "__main__":
 	app.run(debug = True)
