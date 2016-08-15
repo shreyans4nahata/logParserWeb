@@ -78,7 +78,7 @@ def completeListIQR(inputCSVFile,alpha):
             time_val = mdates.date2num(time_stamp)
             t_list.append(time_val)
             tr.append(i)
-            inliers_final.append({"x":time_val,"y":i})
+            #inliers_final.append({"x":time_val,"y":i})
         
         diff_tim = []
         diff_tim.append(0)
@@ -98,5 +98,6 @@ def completeListIQR(inputCSVFile,alpha):
             if tr[h] < ll or tr[h] > ul:
                 
                 outliers_final.append({"x": t_list[h],"y":tr[h]})
-
+            else:
+                inliers_final.append({"x": t_list[h],"y":tr[h]})
         return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
