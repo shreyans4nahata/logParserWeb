@@ -12,3 +12,6 @@ Webapp for the anomaly detection project.
 # Current functionality in the webapp:
   1. File upload from web interface.
   2. Generating parsed file and saving it.
+  3. Getting the unique IP list.
+  4. Calculating outliers based on IQR and sending data of the same.(outliers and inliers)
+    - Tunable parameter : Alpha (Floating point value)
