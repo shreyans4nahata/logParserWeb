@@ -17,7 +17,7 @@ def getUiP(inputCSVFile):
     timestamp = [] # list to store all timestamps includes duplicates
     ip = [] # list to store all remote ip's
     unique_ip = []
-    
+
     # storing timestamp and ip's in a list
     for row in reader:
         timestamp.append(row['f1'])
@@ -32,9 +32,9 @@ def getUiP(inputCSVFile):
 
     return json.dumps({"ip":unique_ip})
 
-def completeListIQR(inputCSVFile,alpha,ip):
+def completeListIQR(inputCSVFile,alpha,req_ip):
 
-    alpha = abs(alpha)
+    alpha = abs(float(alpha))
     
     inliers_final = []
     outliers_final = []
@@ -67,11 +67,12 @@ def completeListIQR(inputCSVFile,alpha,ip):
 
     # incrementing the count for each ip
     for j in range(len(timestamp)):
-        if ip[j] == ip:
+        if ip[j] == str(req_ip):
             temp_dict[timestamp[j]]+=1
 
     # sorting dictionary by keys
     od = collections.OrderedDict(sorted(temp_dict.items()))
+
 
     for t,i in od.iteritems():
         #sp_dict = {}
@@ -87,7 +88,8 @@ def completeListIQR(inputCSVFile,alpha,ip):
     for x in range(1,len(t_list)):
         diff_tim.append(t_list[x] - t_list[0])
     
-    print tr
+    len_tr = len(tr)
+    
     q75, q25 = np.percentile(tr, [75 ,25])
     iqr = q75 - q25
     ul = q75 + alpha*iqr
@@ -96,11 +98,16 @@ def completeListIQR(inputCSVFile,alpha,ip):
     print q75,q25
     outlier = []
     outlier_x = []
-    for h in range(len(tr)):
+    
+    for h in range(len_tr):
+        new_dict = {}
         if tr[h] < ll or tr[h] > ul:
-            
-            outliers_final.append({"x": t_list[h],"y":tr[h]})
+            new_dict["x"] =  t_list[h]
+            new_dict["y"] =  tr[h]
+            outliers_final.append(new_dict)
         else:
-            inliers_final.append({"x": t_list[h],"y":tr[h]})
+            new_dict["x"] =  t_list[h]
+            new_dict["y"] =  tr[h]
+            inliers_final.append(new_dict)
 
     return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
