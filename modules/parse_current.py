@@ -67,3 +67,5 @@ def parser(inputFileName):
 
 	inputFile.close()
 	outputFile.close()
+	#Return output file name
+	return outputFileName

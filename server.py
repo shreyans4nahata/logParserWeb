@@ -3,6 +3,8 @@ from flask import Flask, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 import json
 import modules.parse_current as parser
+import modules.generalMod as gen
+
 UPLOAD_FOLDER = './uploadedLogs'
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'csv', 'log'])
@@ -38,10 +40,19 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            parser.parser(UPLOAD_FOLDER + '/' + filename)
-            return json.dumps({"message":"success!!"})
+            saved_file = parser.parser(UPLOAD_FOLDER + '/' + filename)
+            return json.dumps({"parsed":saved_file})
 
     return render_template('app.html')
+
+#Route for unique Ip's
+@app.route('/listOfIp/<filename>',methods = ['POST'] )
+def getIpList(filename):
+    if filename == "" or filename == None:
+        flash('Specify the filename')
+        return redirect(request.url)
+    if filename :
+        return gen.getUiP(filename)
 
 if __name__ == "__main__":
 	app.run(debug = True)
