@@ -54,11 +54,12 @@ def getIpList(filename):
     if filename :
         return gen.getUiP(filename)
 
-@app.route('/iqr',methods = ['POST'])
+@app.route('/interq',methods = ['POST'])
 def IQR():
-    filename = request.form['filename']
-    ip = request.form['ip'] 
-    alpha = float(request.form['alpha'])
+    param = json.loads(request.data)
+    filename = param['filename']
+    ip = param['ip']
+    alpha = float(param['alpha'])
 
     if filename == "" or alpha == "" or ip == "":
         flash('Irregular')
