@@ -24,11 +24,16 @@
   </head>
   <body>
     <div class="container well well-lg">
-  <form>
-        <div class="row">
-          <div id="chart"></div>
-        </div>
+      <div class="row">
+        <div id="chart"></div>
+      </div>
 
+  <form>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
 
         <div class="row">
@@ -135,7 +140,22 @@ axios.post('/upload', data)
         toastr.error("Error occured");
       })
 }
-
+function draw(inlier, outlier){
+var graph = new Rickshaw.Graph({
+        element: document.querySelector("#chart"),
+        renderer: 'scatterplot',
+        width: 800,
+        height: 300,
+        series: [{
+                data: inlier,
+                color: 'steelblue'
+        }, {
+                data: outlier,
+                color: 'lightblue'
+        }]
+});
+graph.render();
+}
 document.getElementById('post').onclick = function () {
   var e = document.getElementById("ip");
   var selectedIp = e.options[e.selectedIndex].text;
@@ -150,25 +170,14 @@ document.getElementById('post').onclick = function () {
     alpha : param,
     filename : filename
   }
-  console.log(data)
     axios.post('/interq', data)
          .then(function(res) {
-           console.log(res);
+            var inlier = res.data.inliers;
+            var outlier = res.data.outliers;
+            draw(inlier, outlier)
          })
          .catch(function(err) {
            console.log(err);
          })
   }
-
-// var graph = new Rickshaw.Graph( {
-//     element: document.querySelector("#chart"),
-//     width: 300,
-//     height: 200,
-//     series: [{
-//         color: 'steelblue',
-//         data: [{ x: 0, y: 120 }, { x: 2, y: 38 }, { x: 3, y: 70 }, { x: 4, y: 32 }]
-//     }]
-// });
-//
-// graph.render();
 </script>
