@@ -66,5 +66,15 @@ def IQR():
         return redirect(request.url)
     return gen.completeListIQR(filename,alpha,ip)
 
+@app.route('/movmedian', methods = ['POST'])
+def median():
+    param = json.loads(request.data)
+    filename = param['filename']
+    ip = param['ip']
+    alpha = float(param['alpha'])
+    window = int(param['window'])
+
+    return gen.completeListMed(filename,ip,alpha,window)
+
 if __name__ == "__main__":
 	app.run(debug = True)
