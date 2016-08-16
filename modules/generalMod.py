@@ -102,6 +102,9 @@ def completeListIQR(inputCSVFile,alpha,req_ip):
     for h in range(len_tr):
         new_dict = {}
         if tr[h] < ll or tr[h] > ul:
+            # When u uncomment below lines don't forget to do debug = false in server.py
+            # outlier.append(tr[h])
+            # outlier_x.append(t_list[h])
             new_dict["x"] =  index
             new_dict["y"] =  tr[h]
             outliers_final.append(new_dict)
@@ -111,6 +114,11 @@ def completeListIQR(inputCSVFile,alpha,req_ip):
             new_dict["y"] =  tr[h]
             inliers_final.append(new_dict)
             index+=1
+
+    # When u uncomment below lines don't forget to do debug = false in server.py
+    # plt.plot(t_list,tr)
+    # plt.plot(outlier_x,outlier,linestyle = '-',marker = 'o',color = 'r')
+    # plt.show()
 
     return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
 
@@ -187,6 +195,9 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
     for h in range(len_tr):
         new_dict = {}
         if tr[h] < ll or tr[h] > ul:
+            # When u uncomment below lines don't forget to do debug = false in server.py
+            # r_outlier.append(tr[h])
+            # r_outlier_x.append(t_list[h])
             new_dict["x"] =  index
             new_dict["y"] =  tr[h]
             outliers_final.append(new_dict)
@@ -196,6 +207,11 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
             new_dict["y"] =  tr[h]
             inliers_final.append(new_dict)
             index+=1
+
+    # When u uncomment below lines don't forget to do debug = false in server.py
+    # plt.plot(t_list,tr)
+    # plt.plot(r_outlier_x,r_outlier,linestyle = '-',marker = 'o',color = 'r')
+    # plt.show()
 
 
     #Close file
