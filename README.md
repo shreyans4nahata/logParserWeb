@@ -14,4 +14,9 @@ Webapp for the anomaly detection project.
   2. Generating parsed file and saving it.
   3. Getting the unique IP list.
   4. Calculating outliers based on IQR and sending data of the same.(outliers and inliers)
-    - Tunable parameter : Alpha (Floating point value)
+    - Tunable parameter :
+      - Alpha (Floating point value)
+  5. Calculating outliers based on moving window MAD and sending data of the same.(outliers and inliers)
+    - Tunable parameters: 
+      - Alpha (Floating point value)
+      - Window Size (integer value)
