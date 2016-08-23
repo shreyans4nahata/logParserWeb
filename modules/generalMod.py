@@ -209,9 +209,9 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
             index+=1
 
     # When u uncomment below lines don't forget to do debug = false in server.py
-    plt.plot(t_list,tr)
-    plt.plot(r_outlier_x,r_outlier,linestyle = '-',marker = 'o',color = 'r')
-    plt.show()
+    #plt.plot(t_list,tr)
+    #plt.plot(r_outlier_x,r_outlier,linestyle = '-',marker = 'o',color = 'r')
+    #plt.show()
 
 
     #Close file

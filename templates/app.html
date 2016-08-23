@@ -209,7 +209,7 @@ function IQR() {
     //var param = document.getElementById('param').value;
 
     //var window_size = document.getElementById('window_size').value;
-    console.log("Slider",slider1._state.value[0])
+    //console.log("Slider",slider1._state.value[0])
     var filen = window.localStorage.getItem('current').split('.')
 
     var filename = filen[0]+".csv"
@@ -233,18 +233,14 @@ function MMedian() {
     var e = document.getElementById("ip");
     var selectedIp = e.options[e.selectedIndex].text;
 
-    var param = document.getElementById('param').value;
-
-    var window_size = document.getElementById('window_size').value;
-
     var filen = window.localStorage.getItem('current').split('.')
 
     var filename = filen[0]+".csv"
     var data = {
       ip : selectedIp,
-      alpha : param,
+      alpha : parseInt(slider1._state.value[0]),
       filename : filename,
-      window_size : window_size
+      window_size : parseInt(slider2._state.value[0])
     }
       axios.post('/movmedian', data)
            .then(function(res) {
