@@ -72,9 +72,9 @@ def median():
     filename = param['filename']
     ip = param['ip']
     alpha = float(param['alpha'])
-    window = int(param['window'])
+    window = int(param['window_size'])
 
     return gen.completeListMed(filename,ip,alpha,window)
 
 if __name__ == "__main__":
-	app.run(debug = True)
+	app.run(debug = False)

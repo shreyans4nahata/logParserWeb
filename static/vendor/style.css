@@ -5,7 +5,12 @@ font-family: 'RobotoDraft', sans-serif;
 font-size: 15px;
 padding: 20px;
 }
-
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+#ex2Slider .slider-selection {
+	background: #BABABA;
+}
 .loader {
   top : 100px
 }
