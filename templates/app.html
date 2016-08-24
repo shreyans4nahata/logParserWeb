@@ -59,7 +59,6 @@
        </div>
      </div>
 
-      <br>
       <div class="row">
         <div class="col-md-8"></div>
       <div class="form-group col-md-4">
@@ -71,20 +70,25 @@
         </select>
      </div>
    </div>
-      <br>
 
-      <form>
+    <form>
       <div class="row">
-        <div class="col-md-6"></div>
-          <div class="form-group col-md-3">
+        <div class="col-md-8"></div>
+          <div class="col-md-4">
             <!-- <input type="text" placeholder="parameter" id="param" name="param"/> -->
-            <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="5" data-slider-step=".5" data-slider-value="1"/>
+            <!-- <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="5" data-slider-step=".5" data-slider-value="1"/>alpha -->
+            <input type="range" name="rangeInput" min="0" max="10" step="0.5" onchange="updateTextInput1(this.value);">
+            <input type="text" id="textInput1" value="" placeholder="alpha">
         </div>
-        <div class="form-group col-md-3">
-          <input id="ex2" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="5" data-slider-step=".5" data-slider-value="1"/>
-      </div>
       </div>
 
+      <div class="row">
+        <div class="col-md-8"></div>
+          <div class="col-md-4">
+            <input type="range" name="rangeInput" min="0" max="1000" step="1" onchange="updateTextInput2(this.value);">
+            <input type="text" id="textInput2" value="" placeholder="window size">
+      </div>
+    </div>
       <br>
 
         <div class="row">
@@ -101,18 +105,14 @@
 
 <script>
 document.getElementById('loader').style.visibility = "hidden";
+function updateTextInput1(val) {
+          document.getElementById('textInput1').value=val;
+        }
 
-var slider1 = new Slider('#ex1', {
-	formatter: function(value) {
-		return 'Current value: ' + value;
-	}
-});
+function updateTextInput2(val) {
+          document.getElementById('textInput2').value=val;
+        }
 
-var slider2 = new Slider('#ex2', {
-	formatter: function(value) {
-		return 'Current value: ' + value;
-	}
-});
 //helper for dropdown
 function initDropdownList( id, a) {
     var select, i, option;
@@ -215,7 +215,7 @@ function IQR() {
     var filename = filen[0]+".csv"
     var data = {
       ip : selectedIp,
-      alpha : parseInt(slider1._state.value[0]),
+      alpha : parseFloat(document.getElementById('textInput1').value),
       filename : filename
     }
       axios.post('/interq', data)
@@ -238,9 +238,9 @@ function MMedian() {
     var filename = filen[0]+".csv"
     var data = {
       ip : selectedIp,
-      alpha : parseInt(slider1._state.value[0]),
+      alpha : parseFloat(document.getElementById('textInput1').value),
       filename : filename,
-      window_size : parseInt(slider2._state.value[0])
+      window_size : parseInt(document.getElementById('textInput2').value)
     }
       axios.post('/movmedian', data)
            .then(function(res) {
