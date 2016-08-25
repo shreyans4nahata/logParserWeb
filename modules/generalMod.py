@@ -217,4 +217,4 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
     #Close file
     fileObject.close()
 
-    return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
+    return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })    
