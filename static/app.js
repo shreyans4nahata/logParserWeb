@@ -108,7 +108,7 @@ function IQR() {
               // var inlier = res.data.inliers;
               // var outlier = res.data.outliers;
               // draw(inlier, outlier)
-              google.charts.load('current', {'packages':['corechart']});
+              google.charts.load('44', {'packages':['corechart']});
               google.charts.setOnLoadCallback(drawChart);
               function drawChart() {
                 console.log("TABLE",dataTable)
@@ -116,7 +116,13 @@ function IQR() {
 
                 var options = {
                   title: 'request counts vs timestamp',
-                  legend: 'none'
+                  legend: 'none',
+                  explorer: {
+                    actions: ['dragToZoom', 'rightClickToReset'],
+                    axis: 'horizontal',
+                    keepInBounds: true,
+                    maxZoomIn: 4.0
+            }
                 };
 
                 var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
