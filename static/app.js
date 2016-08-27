@@ -1,3 +1,4 @@
+
 document.getElementById('loader').style.visibility = "hidden";
 function updateTextInput1(val) {
           document.getElementById('textInput1').value=val;
@@ -51,33 +52,7 @@ axios.post('/upload', data)
         toastr.error("Error occured");
       })
 }
-function draw(inlier, outlier){
-var graph = new Rickshaw.Graph({
-        element: document.querySelector("#chart"),
-        renderer: 'scatterplot',
-        width: 1000,
-        height: 485,
-        series: [{
-                data: inlier,
-                color: 'steelblue'
-        }, {
-                data: outlier,
-                color: 'red'
-        }]
-});
-graph.render();
-var xAxis = new Rickshaw.Graph.Axis.Time({
-    graph: graph
-});
-xAxis.render();
-var yAxis = new Rickshaw.Graph.Axis.Y({
-    graph: graph
-});
-yAxis.render();
-var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-    graph: graph
-} );
-}
+
 document.getElementById('post').onclick = function () {
   var ev = document.getElementById('algo')
   var selectedAlgo = ev.options[ev.selectedIndex].value
@@ -114,9 +89,41 @@ function IQR() {
     }
       axios.post('/interq', data)
            .then(function(res) {
-              var inlier = res.data.inliers;
-              var outlier = res.data.outliers;
-              draw(inlier, outlier)
+             var dataTable = [];
+             dataTable.push(['X', 'Y', {'type': 'string', 'role': 'style'}])
+             for(var i =0;i < res.data.inliers.length;i++) {
+                  var arr = [];
+                  arr.push(res.data.inliers[i].x);
+                  arr.push(res.data.inliers[i].y);
+                  arr.push('point { fill-color: #a52714; }');
+                  dataTable.push(arr);
+             }
+             for(var k =0;k < res.data.outliers.length;k++) {
+                  var arr = [];
+                  arr.push(res.data.outliers[k].x);
+                  arr.push(res.data.outliers[k].y);
+                  arr.push('point { fill-color: #a52784; }');
+                  dataTable.push(arr);
+             }
+              // var inlier = res.data.inliers;
+              // var outlier = res.data.outliers;
+              // draw(inlier, outlier)
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
+              function drawChart() {
+                console.log("TABLE",dataTable)
+                var data = google.visualization.arrayToDataTable(dataTable);
+
+                var options = {
+                  title: 'request counts vs timestamp',
+                  legend: 'none'
+                };
+
+                var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
+
+                chart.draw(data, options);
+              }
+              //drawChart(dataTable);
            })
            .catch(function(err) {
              console.log(err);
@@ -138,9 +145,40 @@ function MMedian() {
     }
       axios.post('/movmedian', data)
            .then(function(res) {
-              var inlier = res.data.inliers;
-              var outlier = res.data.outliers;
-              draw(inlier, outlier)
+             var dataTable = [];
+             dataTable.push(['X', 'Y', {'type': 'string', 'role': 'style'}])
+             for(var i =0;i < res.data.inliers.length;i++) {
+                  var arr = [];
+                  arr.push(res.data.inliers[i].x);
+                  arr.push(res.data.inliers[i].y);
+                  arr.push('point { fill-color: #a52714; }');
+                  dataTable.push(arr);
+             }
+             for(var k =0;k < res.data.outliers.length;k++) {
+                  var arr = [];
+                  arr.push(res.data.outliers[k].x);
+                  arr.push(res.data.outliers[k].y);
+                  arr.push('point { fill-color: #a52784; }');
+                  dataTable.push(arr);
+             }
+              // var inlier = res.data.inliers;
+              // var outlier = res.data.outliers;
+              // draw(inlier, outlier)
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
+              function drawChart() {
+                console.log("TABLE",dataTable)
+                var data = google.visualization.arrayToDataTable(dataTable);
+
+                var options = {
+                  title: 'request counts vs timestamp',
+                  legend: 'none'
+                };
+
+                var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
+
+                chart.draw(data, options);
+              }
            })
            .catch(function(err) {
              console.log(err);
