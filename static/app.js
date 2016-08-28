@@ -193,54 +193,7 @@ function MAvg() {
       }
         axios.post('/movaverage', data)
              .then(function(res) {
-               var dataTable = [];
-               dataTable.push(['X',
-                               'Y',
-                               {'type': 'string', 'role': 'style'},
-                               {'type': 'string', 'role': 'tooltip'}])
-               for(var i =0;i < res.data.inliers.length;i++) {
-                    var arr = [];
-                    arr.push(res.data.inliers[i].x);
-                    arr.push(res.data.inliers[i].y);
-                    arr.push('point { fill-color: #a52714; }');
-                    arr.push(res.data.inliers[i]["time"] + " : " + (res.data.inliers[i].y).toString())
-                    dataTable.push(arr);
-               }
-               for(var k =0;k < res.data.outliers.length;k++) {
-                    var arr = [];
-                    arr.push(res.data.outliers[k].x);
-                    arr.push(res.data.outliers[k].y);
-                    arr.push('point { fill-color: #a52784; }');
-                    arr.push(res.data.outliers[k]["time"] + " : " + (res.data.outliers[k].y).toString())
-                    dataTable.push(arr);
-               }
-                // var inlier = res.data.inliers;
-                // var outlier = res.data.outliers;
-                // draw(inlier, outlier)
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
-                function drawChart() {
-                  console.log("TABLE",dataTable)
-                  var data = google.visualization.arrayToDataTable(dataTable);
-
-                  var options = {
-                    title: 'request counts vs timestamp',
-                    legend: 'none',
-                    width: 1000,
-                    height: 400,
-                    explorer: {
-                      actions: ['dragToZoom', 'rightClickToReset'],
-                      axis: 'horizontal',
-                      keepInBounds: true,
-                      maxZoomIn: 4.0
-                    }
-                  };
-
-                  var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
-
-                  chart.draw(data, options);
-                }
-
+                googleChartHelper(res);
              })
              .catch(function(err) {
                console.log(err);
