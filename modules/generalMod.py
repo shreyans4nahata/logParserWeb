@@ -192,8 +192,8 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
         new_dict = {}
         if tr[h] < ll or tr[h] > ul:
             # When u uncomment below lines don't forget to do debug = false in server.py
-            r_outlier.append(tr[h])
-            r_outlier_x.append(t_list[h])
+            # r_outlier.append(tr[h])
+            # r_outlier_x.append(t_list[h])
             new_dict["x"] =  index
             new_dict["y"] =  tr[h]
             new_dict["time"] = t_list[h]
@@ -216,3 +216,82 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
     fileObject.close()
 
     return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
+
+def completeListMov(inputCSVFile,req_ip,window):
+
+    window = int(abs(window))
+    
+    inliers_final = []
+    outliers_final = []
+
+    outputDir = os.getcwd() + "/parsedOutput/"
+    fileObject = open(outputDir+inputCSVFile,"r")
+    reader = csv.DictReader(fileObject)
+
+    timestamp = []
+    ip = []
+
+    for row in reader:
+        timestamp.append(row['f1'])
+        ip.append(row['f2'])
+
+    unique_ip = list(set(ip)) # contains unique ip's
+
+    unique_ip_len = len(unique_ip)
+
+    temp_dict = {} # temporary dictinary
+    final_dict = {}
+    tr = [] # list containing request hits at particular ip
+    t_list = [] #list containg formatted timestamp
+
+    # initialization of request hit to 0 corresponding timestamp
+    for j in range(len(timestamp)):
+        temp_dict[timestamp[j]] = 0
+
+    # incrementing the count for each ip
+    for j in range(len(timestamp)):
+        if ip[j] == str(req_ip):
+            temp_dict[timestamp[j]]+=1
+
+    od = collections.OrderedDict(sorted(temp_dict.items()))
+
+    for t,i in od.iteritems():
+        t_list.append(t)
+        tr.append(i)
+
+    x = t_list
+    y = tr
+
+    MOV = movingaverage(y,window).tolist()
+    STD = np.std(MOV)
+    events= []
+
+    index = 0
+    y_len = len(y)
+    t_events = []
+
+    for h in range(y_len):
+
+        new_dict = {}
+        if y[h] > (MOV[h]+STD) :
+            new_dict["x"] =  index
+            new_dict["y"] =  y[h]
+            new_dict["time"] = x[h]
+            outliers_final.append(new_dict)
+            index+=1
+        else:
+            new_dict["x"] =  index
+            new_dict["y"] =  y[h]
+            new_dict["time"] = x[h]
+            inliers_final.append(new_dict)
+            index+=1
+    
+
+    fileObject.close()
+    
+    return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
+
+#Utility function for Moving average
+def movingaverage(interval, window_size):
+    window = np.ones(int(window_size))/float(window_size)
+    return np.convolve(interval, window, 'same')

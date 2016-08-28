@@ -216,24 +216,64 @@ function MAvg() {
       var e = document.getElementById("ip");
       var selectedIp = e.options[e.selectedIndex].text;
 
-      var param = document.getElementById('param').value;
-
-      var window_size = document.getElementById('window_size').value;
-
       var filen = window.localStorage.getItem('current').split('.')
 
       var filename = filen[0]+".csv"
       var data = {
         ip : selectedIp,
-        alpha : param,
         filename : filename,
-        window_size : window_size
+        window_size : parseInt(document.getElementById('textInput2').value)
       }
-        axios.post('/movmedian', data)
+        axios.post('/movaverage', data)
              .then(function(res) {
-                var inlier = res.data.inliers;
-                var outlier = res.data.outliers;
-                draw(inlier, outlier)
+               var dataTable = [];
+               dataTable.push(['X',
+                               'Y',
+                               {'type': 'string', 'role': 'style'},
+                               {'type': 'string', 'role': 'tooltip'}])
+               for(var i =0;i < res.data.inliers.length;i++) {
+                    var arr = [];
+                    arr.push(res.data.inliers[i].x);
+                    arr.push(res.data.inliers[i].y);
+                    arr.push('point { fill-color: #a52714; }');
+                    arr.push(res.data.inliers[i]["time"] + " : " + (res.data.inliers[i].y).toString())
+                    dataTable.push(arr);
+               }
+               for(var k =0;k < res.data.outliers.length;k++) {
+                    var arr = [];
+                    arr.push(res.data.outliers[k].x);
+                    arr.push(res.data.outliers[k].y);
+                    arr.push('point { fill-color: #a52784; }');
+                    arr.push(res.data.outliers[k]["time"] + " : " + (res.data.outliers[k].y).toString())
+                    dataTable.push(arr);
+               }
+                // var inlier = res.data.inliers;
+                // var outlier = res.data.outliers;
+                // draw(inlier, outlier)
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                  console.log("TABLE",dataTable)
+                  var data = google.visualization.arrayToDataTable(dataTable);
+
+                  var options = {
+                    title: 'request counts vs timestamp',
+                    legend: 'none',
+                    width: 1000,
+                    height: 400,
+                    explorer: {
+                      actions: ['dragToZoom', 'rightClickToReset'],
+                      axis: 'horizontal',
+                      keepInBounds: true,
+                      maxZoomIn: 4.0
+                    }
+                  };
+
+                  var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
+
+                  chart.draw(data, options);
+                }
+
              })
              .catch(function(err) {
                console.log(err);

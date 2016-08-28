@@ -76,5 +76,14 @@ def median():
 
     return gen.completeListMed(filename,ip,alpha,window)
 
+@app.route('/movaverage', methods = ['POST'])
+def moavg():
+    param = json.loads(request.data)
+    filename = param['filename']
+    ip = param['ip']
+    window = int(param['window_size'])
+
+    return gen.completeListMov(filename,ip,window)
+
 if __name__ == "__main__":
 	app.run(debug = False)
