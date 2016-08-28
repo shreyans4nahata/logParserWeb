@@ -19,4 +19,7 @@ Webapp for the anomaly detection project.
   5. Calculating outliers based on moving window MAD and sending data of the same.(outliers and inliers)
     - Tunable parameters: 
       - Alpha (Floating point value)
-      - Window Size (integer value)
+      - Window Size (Integer value)
+  6. Calculating outliers based on Moving Average and sending data of the same.(outliers and inliers)
+    - Tunable parameters:
+      - Window Size (Integer value)
