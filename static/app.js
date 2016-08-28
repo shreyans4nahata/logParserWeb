@@ -1,4 +1,3 @@
-
 document.getElementById('loader').style.visibility = "hidden";
 function updateTextInput1(val) {
           document.getElementById('textInput1').value=val;
@@ -89,13 +88,18 @@ function IQR() {
     }
       axios.post('/interq', data)
            .then(function(res) {
+             console.log(res.data.inliers[2]["time"]);
              var dataTable = [];
-             dataTable.push(['X', 'Y', {'type': 'string', 'role': 'style'}])
+             dataTable.push(['X',
+                             'Y',
+                             {'type': 'string', 'role': 'style'},
+                             {'type': 'string', 'role': 'tooltip'}])
              for(var i =0;i < res.data.inliers.length;i++) {
                   var arr = [];
                   arr.push(res.data.inliers[i].x);
                   arr.push(res.data.inliers[i].y);
                   arr.push('point { fill-color: #a52714; }');
+                  arr.push(res.data.inliers[i]["time"] + " : " + (res.data.inliers[i].y).toString());
                   dataTable.push(arr);
              }
              for(var k =0;k < res.data.outliers.length;k++) {
@@ -103,6 +107,7 @@ function IQR() {
                   arr.push(res.data.outliers[k].x);
                   arr.push(res.data.outliers[k].y);
                   arr.push('point { fill-color: #a52784; }');
+                  arr.push(res.data.outliers[k]["time"] + " : " + (res.data.outliers[k].y).toString());
                   dataTable.push(arr);
              }
               // var inlier = res.data.inliers;
@@ -117,6 +122,7 @@ function IQR() {
                 var options = {
                   title: 'request counts vs timestamp',
                   legend: 'none',
+                  height: 600,
                   explorer: {
                     actions: ['dragToZoom', 'rightClickToReset'],
                     axis: 'horizontal',
@@ -152,12 +158,16 @@ function MMedian() {
       axios.post('/movmedian', data)
            .then(function(res) {
              var dataTable = [];
-             dataTable.push(['X', 'Y', {'type': 'string', 'role': 'style'}])
+             dataTable.push(['X',
+                             'Y',
+                             {'type': 'string', 'role': 'style'},
+                             {'type': 'string', 'role': 'tooltip'}])
              for(var i =0;i < res.data.inliers.length;i++) {
                   var arr = [];
                   arr.push(res.data.inliers[i].x);
                   arr.push(res.data.inliers[i].y);
                   arr.push('point { fill-color: #a52714; }');
+                  arr.push(res.data.inliers[i]["time"] + " : " + (res.data.inliers[i].y).toString())
                   dataTable.push(arr);
              }
              for(var k =0;k < res.data.outliers.length;k++) {
@@ -165,6 +175,7 @@ function MMedian() {
                   arr.push(res.data.outliers[k].x);
                   arr.push(res.data.outliers[k].y);
                   arr.push('point { fill-color: #a52784; }');
+                  arr.push(res.data.outliers[k]["time"] + " : " + (res.data.outliers[k].y).toString())
                   dataTable.push(arr);
              }
               // var inlier = res.data.inliers;
@@ -178,7 +189,15 @@ function MMedian() {
 
                 var options = {
                   title: 'request counts vs timestamp',
-                  legend: 'none'
+                  legend: 'none',
+                  width: 1000,
+                  height: 400,
+                  explorer: {
+                    actions: ['dragToZoom', 'rightClickToReset'],
+                    axis: 'horizontal',
+                    keepInBounds: true,
+                    maxZoomIn: 4.0
+            }
                 };
 
                 var chart = new google.visualization.ScatterChart(document.getElementById('chart'));

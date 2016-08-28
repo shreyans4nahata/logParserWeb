@@ -76,17 +76,14 @@ def completeListIQR(inputCSVFile,alpha,req_ip):
 
     for t,i in od.iteritems():
         #sp_dict = {}
-        time,dis =t.split(' ')
-        time_stamp = datetime.datetime.strptime(time,'%d/%b/%Y:%H:%M:%S')
-        time_val = mdates.date2num(time_stamp)
-        t_list.append(time_val)
+        t_list.append(t)
         tr.append(i)
         #inliers_final.append({"x":time_val,"y":i})
 
-    diff_tim = []
-    diff_tim.append(0)
-    for x in range(1,len(t_list)):
-        diff_tim.append(t_list[x] - t_list[0])
+    # diff_tim = []
+    # diff_tim.append(0)
+    # for x in range(1,len(t_list)):
+    #     diff_tim.append(t_list[x] - t_list[0])
 
     len_tr = len(tr)
 
@@ -107,11 +104,13 @@ def completeListIQR(inputCSVFile,alpha,req_ip):
             outlier_x.append(t_list[h])
             new_dict["x"] =  index
             new_dict["y"] =  tr[h]
+            new_dict["time"] = t_list[h]
             outliers_final.append(new_dict)
             index+=1
         else:
             new_dict["x"] =  index
             new_dict["y"] =  tr[h]
+            new_dict["time"] = t_list[h]
             inliers_final.append(new_dict)
             index+=1
 
@@ -164,10 +163,7 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
     od = collections.OrderedDict(sorted(temp_dict.items()))
 
     for t,i in od.iteritems():
-        time,dis =t.split(' ')
-        time_stamp = datetime.datetime.strptime(time,'%d/%b/%Y:%H:%M:%S')
-        time_val = mdates.date2num(time_stamp)
-        t_list.append(time_val)
+        t_list.append(t)
         tr.append(i)
 
     #For median absolute deviation
@@ -200,11 +196,13 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
             r_outlier_x.append(t_list[h])
             new_dict["x"] =  index
             new_dict["y"] =  tr[h]
+            new_dict["time"] = t_list[h]
             outliers_final.append(new_dict)
             index+=1
         else:
             new_dict["x"] =  index
             new_dict["y"] =  tr[h]
+            new_dict["time"] = t_list[h]
             inliers_final.append(new_dict)
             index+=1
 
