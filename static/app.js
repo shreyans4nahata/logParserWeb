@@ -91,7 +91,7 @@ function googleChartHelper(res) {
        var arr = [];
        arr.push(res.data.inliers[i].x);
        arr.push(res.data.inliers[i].y);
-       arr.push('point { fill-color: #a52714; }');
+       arr.push('point { fill-color: 	#006400; }');
        arr.push(res.data.inliers[i]["time"] +
                " : " + (res.data.inliers[i].y).toString());
        dataTable.push(arr);
@@ -100,7 +100,7 @@ function googleChartHelper(res) {
        var arr = [];
        arr.push(res.data.outliers[k].x);
        arr.push(res.data.outliers[k].y);
-       arr.push('point { fill-color: #a52784; }');
+       arr.push('point { fill-color: #ff0000; }');
        arr.push(res.data.outliers[k]["time"] +
                " : " + (res.data.outliers[k].y).toString());
        dataTable.push(arr);
@@ -117,6 +117,12 @@ function googleChartHelper(res) {
        legend: 'right',
        width: 1000,
        height: 400,
+       chartArea: {
+         backgroundColor: {
+           stroke: '#4322c0',
+           strokeWidth: 3
+         }
+       },
        explorer: {
          actions: ['dragToZoom', 'rightClickToReset'],
          axis: 'horizontal',
