@@ -18,7 +18,7 @@ def allowed_file(filename):
 #Basic route at '/'
 @app.route('/')
 def hello():
-	return json.dumps({"message":"hello"})
+	return render_template('app.html')
 
 #Route for handling file uploads
 @app.route('/upload',methods = ['GET', 'POST'])
@@ -43,7 +43,7 @@ def upload_file():
             saved_file = parser.parser(UPLOAD_FOLDER + '/' + filename)
             return json.dumps({"parsed":saved_file})
 
-    return render_template('app.html')
+    #return render_template('app.html')
 
 #Route for unique Ip's
 @app.route('/listOfIp/<filename>',methods = ['POST'] )
