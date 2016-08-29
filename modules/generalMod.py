@@ -220,7 +220,7 @@ def completeListMed(inputCSVFile,req_ip,alpha,window):
 def completeListMov(inputCSVFile,req_ip,window):
 
     window = int(abs(window))
-    
+
     inliers_final = []
     outliers_final = []
 
@@ -285,10 +285,10 @@ def completeListMov(inputCSVFile,req_ip,window):
             new_dict["time"] = x[h]
             inliers_final.append(new_dict)
             index+=1
-    
+
 
     fileObject.close()
-    
+
     return json.dumps({ "inliers" : inliers_final, "outliers" : outliers_final })
 
 #Utility function for Moving average

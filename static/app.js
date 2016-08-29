@@ -1,3 +1,6 @@
+// load function should be called in beginning as it is loaded once
+google.charts.load('44', {'packages':['corechart']});
+
 document.getElementById('loader').style.visibility = "hidden";
 function updateTextInput1(val) {
           document.getElementById('textInput1').value=val;
@@ -59,6 +62,8 @@ document.getElementById("file").onchange = function() {
 
 // plot the graph on click
 document.getElementById('post').onclick = function () {
+  //clear the initial content
+  document.getElementById('chart').innerHTML = "";
   //get the selected algo
   var ev = document.getElementById('algo')
   var selectedAlgo = ev.options[ev.selectedIndex].value
@@ -101,9 +106,7 @@ function googleChartHelper(res) {
        dataTable.push(arr);
   }
 
-   //asynchronous call to drawChart
-   google.charts.load('44', {'packages':['corechart']});
-   google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawChart);
 
    //helper to customize google charts and plot ScatterChart
    function drawChart() {
