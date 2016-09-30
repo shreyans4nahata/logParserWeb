@@ -84,28 +84,30 @@ def createTime(outputFileName):
 	return data
 
 def test_stationarity(timeseries):
-    isStationary = True
-    #Determing rolling statistics
-    rolmean = timeseries.rolling(window=60, center= False).mean()
-    rolstd = timeseries.rolling(window=60, center= False).std()
 
-    #Plot rolling statistics:
-    orig = plt.plot(timeseries, color='blue',label='Original')
-    mean = plt.plot(rolmean, color='red', label='Rolling Mean')
-    std = plt.plot(rolstd, color='black', label = 'Rolling Std')
-    plt.legend(loc='best')
-    plt.title('Rolling Mean & Standard Deviation')
-    plt.show()
-    
-    #Perform Dickey-Fuller test:
-    print 'Results of Dickey-Fuller Test:'
-    dftest = adfuller(timeseries, autolag='AIC')
-    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
-    for key,value in dftest[4].items():
-        dfoutput['Critical Value (%s)'%key] = value
+	isStationary = True
+	#Determing rolling statistics
+	rolmean = timeseries.rolling(window=60, center= False).mean()
+	rolstd = timeseries.rolling(window=60, center= False).std()
+
+	#Plot rolling statistics:
+	orig = plt.plot(timeseries, color='blue',label='Original')
+	mean = plt.plot(rolmean, color='red', label='Rolling Mean')
+	std = plt.plot(rolstd, color='black', label = 'Rolling Std')
+	plt.legend(loc='best')
+	plt.title('Rolling Mean & Standard Deviation')
+	plt.show()
+
+	#Perform Dickey-Fuller test:
+	print 'Results of Dickey-Fuller Test:'
+	dftest = adfuller(timeseries, autolag='AIC')
+	dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+	for key,value in dftest[4].items():
+		dfoutput['Critical Value (%s)'%key] = value
 		if dfoutput['Test Statistic'] > value:
 			isStationary = False
-    print dfoutput
+	print dfoutput
+	return isStationary
 
 #Take the file name as input
 inputFile = raw_input("Enter the log file name")
@@ -116,4 +118,18 @@ print data.index
 ts = data['f1']
 plt.plot(ts)
 plt.show()
-test_stationarity(ts)
+Stat_res = test_stationarity(ts)
+#penalizing higher values
+# Taking log,sqrt or  other transformations
+# ts_log = np.log(ts)
+# plt.plot(ts_log)
+
+# expwighted_avg = pd.ewma(ts_log, halflife=60)
+# plt.plot(ts_log)
+# plt.plot(expwighted_avg, color='red')
+# plt.show()
+
+# ts_log_ewma_diff = ts_log - expwighted_avg
+# ts_log_ewma_diff.dropna(inplace=True)
+# test_stationarity(ts_log_ewma_diff)
+print "The time series is Stationary: ",Stat_res
