@@ -44,7 +44,7 @@ def genTimeSeries(inputCSVFile):
 	# incrementing the count for each ip
 	dikha = 12121212
 	for j in range(0,len(timestamp)):
-		if ip[j] == unique_ip[4]:
+		if ip[j] == unique_ip[7]:
 			temp_dict[timestamp[j]]+=1
 			dikha = j
 
@@ -65,7 +65,8 @@ def genTimeSeries(inputCSVFile):
 
 	writer.writeheader()
 	d1 = {}
-	for k,v in temp_dict.iteritems():
+	od = collections.OrderedDict(sorted(temp_dict.items()))
+	for k,v in od.iteritems():
 		d1 = {}
 		d1['f0'] = k
 		d1['f1'] = v
@@ -83,10 +84,10 @@ def createTime(outputFileName):
 	return data
 
 def test_stationarity(timeseries):
-    
+    isStationary = True
     #Determing rolling statistics
-    rolmean = timeseries.rolling(window=12, center= False).mean()
-    rolstd = timeseries.rolling(window=12, center= False).std()
+    rolmean = timeseries.rolling(window=60, center= False).mean()
+    rolstd = timeseries.rolling(window=60, center= False).std()
 
     #Plot rolling statistics:
     orig = plt.plot(timeseries, color='blue',label='Original')
@@ -102,6 +103,8 @@ def test_stationarity(timeseries):
     dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
     for key,value in dftest[4].items():
         dfoutput['Critical Value (%s)'%key] = value
+		if dfoutput['Test Statistic'] > value:
+			isStationary = False
     print dfoutput
 
 #Take the file name as input
@@ -109,7 +112,7 @@ inputFile = raw_input("Enter the log file name")
 ts_file = genTimeSeries(inputFile)
 
 data = createTime(ts_file)
-print data.head(), data.dtypes
+print data.index
 ts = data['f1']
 plt.plot(ts)
 plt.show()
