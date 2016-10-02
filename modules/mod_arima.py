@@ -9,7 +9,8 @@ import numpy as np
 import json
 import matplotlib.pylab as plt
 import pandas as pd
-from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.stattools import adfuller, acf, pacf
+from statsmodels.tsa.arima_model import ARIMA
 
 
 #Function to generate timeseries
@@ -133,3 +134,32 @@ Stat_res = test_stationarity(ts)
 # ts_log_ewma_diff.dropna(inplace=True)
 # test_stationarity(ts_log_ewma_diff)
 print "The time series is Stationary: ",Stat_res
+
+#Doing ACF and PACF
+lag_acf = acf(ts, nlags=60)
+lag_pacf = pacf(ts, nlags=60, method='ols')
+
+#print "U have crossed the barrier :p"
+
+#Plot ACF: 
+# plt.subplot(121) 
+# plt.plot(lag_acf)
+# plt.axhline(y=0,linestyle='--',color='gray')
+# plt.axhline(y=-1.96/np.sqrt(len(ts)),linestyle='--',color='gray')
+# plt.axhline(y=1.96/np.sqrt(len(ts)),linestyle='--',color='gray')
+# plt.title('Autocorrelation Function')
+# #Plot PACF:
+# plt.subplot(122)
+# plt.plot(lag_pacf)
+# plt.axhline(y=0,linestyle='--',color='gray')
+# plt.axhline(y=-1.96/np.sqrt(len(ts)),linestyle='--',color='gray')
+# plt.axhline(y=1.96/np.sqrt(len(ts)),linestyle='--',color='gray')
+# plt.title('Partial Autocorrelation Function')
+# plt.tight_layout()
+
+#ARIMA model (Both AR and MA)
+# model = ARIMA(ts, order=(2, 1, 2))  #Set the p,d,q vals
+# results_ARIMA = model.fit(disp=-1)  
+# plt.plot(ts)
+# plt.plot(results_ARIMA.fittedvalues, color='red')
+# plt.title('RSS: %.4f'% sum((results_ARIMA.fittedvalues-ts_log_diff)**2))
