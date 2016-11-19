@@ -95,5 +95,15 @@ def createModel():
     pred.createFile(filename,ip)
     return pred.modelTrain(filename, no_ep, ip) #Returns model trained msg on success
 
+@app.route('/predict', methods = ['POST'])
+def predict():
+    param = json.loads(request.data)
+    filename = param['filename']
+    rang_t = param['range_of_time_stamps']
+    ip = param['ip']
+
+    pred.createPredict(filename, ip, rang_t)
+    return pred.prediction(filename, ip, rang_t) #Returns prediction result
+
 if __name__ == "__main__":
 	app.run(debug = False)
