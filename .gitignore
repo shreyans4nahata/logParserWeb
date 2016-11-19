@@ -1,3 +1,4 @@
 /uploadedLogs
 /parsedOutput
+/builtModels
 /**/*.pyc
