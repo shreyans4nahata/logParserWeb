@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import json
 import modules.parse_current as parser
 import modules.generalMod as gen
-
+import modules.trainMod as pred
 UPLOAD_FOLDER = './uploadedLogs'
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'csv', 'log'])
@@ -84,6 +84,16 @@ def moavg():
     window = int(param['window_size'])
 
     return gen.completeListMov(filename,ip,window)
+
+@app.route('/createModel', methods = ['POST'])
+def createModel():
+    param = json.loads(request.data)
+    filename = param['filename']
+    no_ep = param['no_of_epochs']
+    ip = param['ip']
+
+    pred.createFile(filename,ip)
+    return pred.modelTrain(filename, no_ep, ip) #Returns model trained msg on success
 
 if __name__ == "__main__":
 	app.run(debug = False)
