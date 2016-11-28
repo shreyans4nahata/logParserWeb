@@ -106,4 +106,4 @@ def predict():
     return pred.prediction(filename, ip, rang_t) #Returns prediction result
 
 if __name__ == "__main__":
-	app.run(debug = False)
+	app.run(debug = True)
