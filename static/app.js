@@ -10,6 +10,10 @@
               document.getElementById('textInput2').value=val;
             }
 
+function updateTextInput(id, val) {
+    document.getElementById(id).value=val;
+}
+
 //helper for dropdown
 function initDropdownList( id, a) {
 
@@ -211,8 +215,28 @@ function detect() {
                  })
         }
 
-function predict() {
+function trainModel() {
     console.log("HI");
+    //controls
+    var e = document.getElementById("ip");
+    var selectedIp = e.options[e.selectedIndex].text;
+    var filen = window.localStorage.getItem('current').split('.')
+    var filename = filen[0]+".csv"
+
+    //post data
+    var data = {
+      ip : selectedIp,
+      no_of_epochs : parseInt(document.getElementById('textInput3').value),
+      filename : filename
+    }
+
+    axios.post('/createModel', data)
+         .then(function(res) {
+            console.log(res)
+         })
+         .catch(function(err) {
+           console.log(err);
+         })
 }
 
 $("#outdetect").hide();
