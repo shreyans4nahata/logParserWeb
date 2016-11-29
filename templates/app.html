@@ -69,14 +69,17 @@
      </div>
 
     <div class="row">
-      <div class="col-md-4"></div>
+      <div class="col-md-2"></div>
       <div class="col-md-2">
         <button id="odetect" class="btn btn-default" type="button">Outlier Detection</button>
       </div>
       <div class="col-md-2">
+        <button id="omodel" class="btn btn-default" type="button">Train Model</button>
+      </div>
+      <div class="col-md-2">
         <button id="opredict" class="btn btn-default" type="button">Outlier Prediction</button>
       </div>
-     <div class="col-md-4"></div>
+     <div class="col-md-2"></div>
     </div>
 
   <div id="outdetect">
@@ -121,7 +124,7 @@
       </form>
   </div>
 
-  <!-- <div id="outpredict">
+  <div id="outmodel">
     <form>
       <div class="row">
         <div class="col-md-8"></div>
@@ -137,15 +140,15 @@
       </div>
     </div>
     </form>
-  </div> -->
+  </div>
 
   <div id="outpredict">
     <form>
       <div class="row">
         <div class="col-md-8"></div>
           <div class="col-md-4">
-            <input type="range" name="rangeInput" min="0" max="1000" step="1" onchange="updateTextInput('textInput3',this.value);">
-            <input type="text" id="textInput3" value="" placeholder="range">
+            <input type="range" name="rangeInput" min="0" max="1000" step="1" onchange="updateTextInput('textInput4',this.value);">
+            <input type="text" id="textInput4" value="" placeholder="range">
       </div>
     </div>
     <div class="row">

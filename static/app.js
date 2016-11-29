@@ -215,31 +215,31 @@ function detect() {
                  })
         }
 
-// function trainModel() {
-//     console.log("HI");
-//     //controls
-//     var e = document.getElementById("ip");
-//     var selectedIp = e.options[e.selectedIndex].text;
-//     var filen = window.localStorage.getItem('current').split('.')
-//     var filename = filen[0]+".csv"
-//
-//     //post data
-//     var data = {
-//       ip : selectedIp,
-//       no_of_epochs : parseInt(document.getElementById('textInput3').value),
-//       filename : filename
-//     }
-//
-//     axios.post('/createModel', data)
-//          .then(function(res) {
-//             if(res.data.msg)
-//               toastr.success('Model trained')
-//          })
-//          .catch(function(err) {
-//            toastr.error("Error occured in model training");
-//            console.log(err);
-//          })
-// }
+function trainModel() {
+    console.log("HI");
+    //controls
+    var e = document.getElementById("ip");
+    var selectedIp = e.options[e.selectedIndex].text;
+    var filen = window.localStorage.getItem('current').split('.')
+    var filename = filen[0]+".csv"
+
+    //post data
+    var data = {
+      ip : selectedIp,
+      no_of_epochs : parseInt(document.getElementById('textInput3').value),
+      filename : filename
+    }
+
+    axios.post('/createModel', data)
+         .then(function(res) {
+            if(res.data.msg)
+              toastr.success('Model trained')
+         })
+         .catch(function(err) {
+           toastr.error("Error occured in model training");
+           console.log(err);
+         })
+}
 
 function predictModel() {
     console.log("predict");
@@ -268,16 +268,25 @@ function predictModel() {
 //initially show the dashboard
 $("#outdetect").hide();
 $("#outpredict").hide();
+$("#outmodel").hide();
 $(".spi").hide();
 
 //detection
 $("#odetect").click(function () {
   $("#outdetect").show();
   $("#outpredict").hide();
+  $("#outmodel").hide();
 });
+
+$("#omodel").click(function () {
+  $("#outdetect").hide();
+  $("#outpredict").hide();
+  $("#outmodel").show();
+})
 
 //prediction
 $("#opredict").click(function () {
   $("#outpredict").show();
   $("#outdetect").hide();
+  $("#outmodel").hide();
 });
