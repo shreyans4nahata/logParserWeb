@@ -98,12 +98,14 @@ def createModel():
 @app.route('/predict', methods = ['POST'])
 def predict():
     param = json.loads(request.data)
+    print(param)
     filename = param['filename']
     rang_t = param['range_of_time_stamps']
     ip = param['ip']
 
-    pred.createPredict(filename, ip, rang_t)
-    return pred.prediction(filename, ip, rang_t) #Returns prediction result
+    pred.createPredict(filename, ip, int(rang_t))
+    res = json.dumps(pred.prediction(filename, ip, int(rang_t))) #Returns prediction result
+    return res
 
 if __name__ == "__main__":
 	app.run(debug = True)

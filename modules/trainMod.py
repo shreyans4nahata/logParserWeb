@@ -261,10 +261,10 @@ def prediction(filename, req_ip, rang_t):
 	final_arr = []
 	final_len = len(testPredict)
 	for i in range(final_len):
-		final_arr.append(testPredict[i][0])
+		final_arr.append(str(testPredict[i][0]))
 
 	fin_d = {}
 	fin_d["prediction_result"] = final_arr
 	#print fin_d
 
-	return (fin_d)
+	return fin_d

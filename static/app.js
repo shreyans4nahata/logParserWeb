@@ -215,8 +215,34 @@ function detect() {
                  })
         }
 
-function trainModel() {
-    console.log("HI");
+// function trainModel() {
+//     console.log("HI");
+//     //controls
+//     var e = document.getElementById("ip");
+//     var selectedIp = e.options[e.selectedIndex].text;
+//     var filen = window.localStorage.getItem('current').split('.')
+//     var filename = filen[0]+".csv"
+//
+//     //post data
+//     var data = {
+//       ip : selectedIp,
+//       no_of_epochs : parseInt(document.getElementById('textInput3').value),
+//       filename : filename
+//     }
+//
+//     axios.post('/createModel', data)
+//          .then(function(res) {
+//             if(res.data.msg)
+//               toastr.success('Model trained')
+//          })
+//          .catch(function(err) {
+//            toastr.error("Error occured in model training");
+//            console.log(err);
+//          })
+// }
+
+function predictModel() {
+    console.log("predict");
     //controls
     var e = document.getElementById("ip");
     var selectedIp = e.options[e.selectedIndex].text;
@@ -226,28 +252,31 @@ function trainModel() {
     //post data
     var data = {
       ip : selectedIp,
-      no_of_epochs : parseInt(document.getElementById('textInput3').value),
+      range_of_time_stamps : parseInt(document.getElementById('textInput3').value),
       filename : filename
     }
 
-    axios.post('/createModel', data)
+    axios.post('/predict', data)
          .then(function(res) {
-            console.log(res)
+           console.log(res)
          })
          .catch(function(err) {
            console.log(err);
          })
 }
 
+//initially show the dashboard
 $("#outdetect").hide();
 $("#outpredict").hide();
 $(".spi").hide();
 
+//detection
 $("#odetect").click(function () {
   $("#outdetect").show();
   $("#outpredict").hide();
 });
 
+//prediction
 $("#opredict").click(function () {
   $("#outpredict").show();
   $("#outdetect").hide();
