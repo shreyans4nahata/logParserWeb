@@ -215,6 +215,8 @@ def prediction(filename, req_ip, rang_t):
 	dataframe = pd.read_csv(ip_predict_name, usecols=[1], engine='python', skipfooter=0)
 	dataframe_actual = pd.read_csv(ip_file_name, usecols=[1], engine='python', skipfooter=0)
 
+	dataframe_time = pd.read_csv(ip_file_name, usecols=[0], engine='python', skipfooter=0)
+	dataframe_time = dataframe_time.values
 	dataset_actual = dataframe_actual.values
 	dataset_actual = dataset_actual.astype('float32')
 
@@ -224,6 +226,7 @@ def prediction(filename, req_ip, rang_t):
 	test_size = len(dataset)
 	test = dataset[0:test_size,:]
 	print len(dataset)
+	print dataframe_time[0:len(dataframe_time),:]
 
 	# reshape into X=t and Y=t+1
 	look_back = 1
@@ -258,13 +261,30 @@ def prediction(filename, req_ip, rang_t):
 
 	print testPredict
 
-	final_arr = []
+	ind = 0
+	actual = []
+	for i in range(len(dataset_actual)):
+		new_dict = {}
+		new_dict["x"] = ind
+		new_dict["y"] = str(dataset_actual[i][0])
+		new_dict["time"] = dataframe_time[i][0]
+		actual.append(new_dict)
+		ind+=1
+
+	#print actual
+
+	predicted = []
 	final_len = len(testPredict)
 	for i in range(final_len):
-		final_arr.append(str(testPredict[i][0]))
+		new_dict = {}
+		new_dict["x"] = ind
+		new_dict["y"] = str(testPredict[i][0])
+		new_dict["time"] = "time"
+		predicted.append(new_dict)
+		ind+=1
 
-	fin_d = {}
-	fin_d["prediction_result"] = final_arr
-	#print fin_d
+	#print predicted
 
-	return fin_d
+
+
+	return json.dumps({"actual" : actual, "predicted" : predicted})

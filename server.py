@@ -104,8 +104,8 @@ def predict():
     ip = param['ip']
 
     pred.createPredict(filename, ip, int(rang_t))
-    res = json.dumps(pred.prediction(filename, ip, int(rang_t))) #Returns prediction result
-    return res
+    #res = json.dumps(pred.prediction(filename, ip, int(rang_t))) #Returns prediction result
+    return pred.prediction(filename, ip, int(rang_t))
 
 if __name__ == "__main__":
 	app.run(debug = True)

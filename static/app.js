@@ -85,7 +85,67 @@ function detect() {
       }
     }
 
+    function googleChartHelperPredict(res) {
+      console.log(res);
+      var dataTable = [];
+
+      // prepare the dataTable for google charts
+      dataTable.push(['timestamp',
+                      'RequestHits',
+                      {'type': 'string', 'role': 'style'},
+                      {'type': 'string', 'role': 'tooltip'}])
+      for(var i = 0;i < res.data.actual.length;i++) {
+           var arr = [];
+           arr.push(res.data.actual[i].x);
+           arr.push(parseFloat(res.data.actual[i].y));
+           arr.push('point { fill-color: 	#006400; }');
+           arr.push(res.data.actual[i]["time"] +
+                   " : " + (parseFloat(res.data.actual[i].y)).toString());
+           dataTable.push(arr);
+      }
+      for(var k =0;k < res.data.predicted.length;k++) {
+           var arr = [];
+           arr.push(res.data.predicted[k].x);
+           arr.push(parseFloat(res.data.predicted[k].y));
+           arr.push('point { fill-color: #ff0000; }');
+           arr.push(res.data.predicted[k]["time"] +
+                   " : " + (parseFloat(res.data.predicted[k].y)).toString());
+           dataTable.push(arr);
+      }
+
+        google.charts.setOnLoadCallback(drawChart);
+
+       //helper to customize google charts and plot ScatterChart
+       function drawChart() {
+         var data = google.visualization.arrayToDataTable(dataTable);
+
+         var options = {
+           title: 'request counts vs timestamp',
+           legend: 'right',
+           width: 1000,
+           height: 400,
+           chartArea: {
+             backgroundColor: {
+               stroke: '#4322c0',
+               strokeWidth: 3
+             }
+           },
+           explorer: {
+             actions: ['dragToZoom', 'rightClickToReset'],
+             axis: 'horizontal',
+             keepInBounds: true,
+             maxZoomIn: 4.0
+     }
+         };
+
+         var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
+
+         chart.draw(data, options);
+       }
+    }
+
     function googleChartHelper(res) {
+      console.log(res);
       var dataTable = [];
 
       // prepare the dataTable for google charts
@@ -216,7 +276,6 @@ function detect() {
         }
 
 function trainModel() {
-    console.log("HI");
     //controls
     var e = document.getElementById("ip");
     var selectedIp = e.options[e.selectedIndex].text;
@@ -252,12 +311,13 @@ function predictModel() {
     //post data
     var data = {
       ip : selectedIp,
-      range_of_time_stamps : parseInt(document.getElementById('textInput3').value),
+      range_of_time_stamps : parseInt(document.getElementById('textInput4').value),
       filename : filename
     }
-
+    console.log(data);
     axios.post('/predict', data)
          .then(function(res) {
+           googleChartHelperPredict(res);
            console.log(res)
          })
          .catch(function(err) {
