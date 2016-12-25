@@ -40,26 +40,39 @@ def createFile(filename,req_ip):
 	unique_ip = list(set(ip)) # contains unique ip's
 
 	unique_ip_len = len(unique_ip)
+	utimestamp = []
+	utimestamp = list(set(timestamp))
+	len_utimes = len(utimestamp)
+	print len(utimestamp)
+	len_times = len(timestamp)
 
 	temp_dict = {} # temporary dictinary
-	#final_dict = {}
-	#tr = [] # list containing request hits at particular ip
-	#t_list = [] #list containg formatted timestamp
-
- 	# initialization of request hit to 0 corresponding timestamp
-	for j in range(len(timestamp)):
+	
+	# initialization of request hit to 0 corresponding timestamp
+	for j in range( len_times ):
 		temp_dict[timestamp[j]] = 0
 
 	# incrementing the count for each ip
-	for j in range(len(timestamp)):
+	for j in range(len(ip)):
 		if ip[j] == str(req_ip):
-			temp_dict[timestamp[j]]+=1
+			temp_dict[timestamp[ j ] ]+=1
+	
+	# Duplication of the dataset 
+	req_hits = []
+	for j in range(len_utimes):
+		req_hits.append(temp_dict[utimestamp[j]])
+
+	k = 0
+	for i in range(len_utimes, 4*len_utimes):
+		utimestamp.append( utimestamp[i-1] + datetime.timedelta(0,1) )
+		temp_dict[ utimestamp[i] ] = req_hits[k%len_utimes]
+		k+=1
 
 	# sorting dictionary by keys
 	od = collections.OrderedDict(sorted(temp_dict.items()))
-	#print od
+	# print od
 
-	#Creating new parsed o/p file
+	#Creatin gnew parsed o/p file
 	outputFileName = outputDir + "Parsed_"+str(req_ip)+"_"+os.path.splitext(ntpath.basename(filename))[0] + ".csv"
 
 	# Opening output file
@@ -117,7 +130,7 @@ def modelTrain(filename, no_ep, req_ip):
 	train_size = int(len(dataset))
 
 	#test_size = len(dataset) - train_size
-	train= dataset[0:train_size-1000,:]
+	train= dataset[0:train_size,:]
 	print(len(train))
 
 	# reshape into X=t and Y=t+1
