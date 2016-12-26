@@ -92,7 +92,10 @@ def createModel():
     no_ep = param['no_of_epochs']
     ip = param['ip']
 
-    pred.createFile(filename,ip)
+    parser.modParser(filename,ip)
+
+    # pred.createFile(filename,ip)
+    
     return pred.modelTrain(filename, no_ep, ip) #Returns model trained msg on success
 
 @app.route('/predict', methods = ['POST'])

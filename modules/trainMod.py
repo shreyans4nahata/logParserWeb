@@ -118,7 +118,7 @@ def modelTrain(filename, no_ep, req_ip):
 
 	no_ep = int(no_ep)
 
-	inpFileName = outputDir + "Parsed_"+str(req_ip)+"_"+os.path.splitext(ntpath.basename(filename))[0] + ".csv"
+	inpFileName = outputDir + "ModParsed_"+str(req_ip)+"_"+os.path.splitext(ntpath.basename(filename))[0] + ".csv"
 
 	# load the dataset
 	dataframe = pd.read_csv( inpFileName ,usecols=[1], engine='python', skipfooter=0)
@@ -160,13 +160,14 @@ def modelTrain(filename, no_ep, req_ip):
 	model.save_weights(model_weights_name)
 	print "saved"
 
-	return json.dumps({"msg" : "modeldel Trained" })
+	msg1 = str(math.sqrt(trainScore))
+	return json.dumps({"msg" : "Model Trained with RMSE value: "+msg1 })
 
 
 def createPredict(filename, req_ip, rang_t):
 	numpy.random.seed(7)
 
-	ip_file_name = outputDir + "Parsed_"+ str(req_ip) + "_" + os.path.splitext(ntpath.basename(filename))[0] + ".csv"
+	ip_file_name = outputDir + "ModParsed_"+ str(req_ip) + "_" + os.path.splitext(ntpath.basename(filename))[0] + ".csv"
 	ip_predict_name = outputDir + "ToPredict_" + str(req_ip) + "_" + os.path.splitext(ntpath.basename(filename))[0] + ".csv"
 
 	# load the dataset
@@ -221,7 +222,7 @@ def prediction(filename, req_ip, rang_t):
 
 	numpy.random.seed(7)
 
-	ip_file_name = outputDir + "Parsed_"+str(req_ip)+"_"+os.path.splitext(ntpath.basename(filename))[0] + ".csv"
+	ip_file_name = outputDir + "ModParsed_"+str(req_ip)+"_"+os.path.splitext(ntpath.basename(filename))[0] + ".csv"
 	ip_predict_name = outputDir + "ToPredict_" + str(req_ip) + "_" + os.path.splitext(ntpath.basename(filename))[0] + ".csv"
 
 	# load the dataset
